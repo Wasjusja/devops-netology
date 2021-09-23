@@ -1,0 +1,12 @@
+Игнорируются файлы директории .terraform
+файлы с расширением tfstate или содержащие tfstate
+crash.logs
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+
+[200~.terraformrc
+terraform.rc
+
