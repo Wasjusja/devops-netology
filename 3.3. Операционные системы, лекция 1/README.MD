@@ -59,11 +59,35 @@ Linux vagrant 5.4.0-80-generic #90-Ubuntu SMP Fri Jul 9 22:49:44 UTC 2021 x86_64
     root@netology1:~#
     ```
     Есть ли смысл использовать в bash `&&`, если применить `set -e`?
+    
+    ![image](https://user-images.githubusercontent.com/91008731/140088041-2c205a20-2fa4-4cfb-910c-b44597b97015.png)
+
+    ![image](https://user-images.githubusercontent.com/91008731/140088387-58e69bac-5dd2-414f-b8fd-cc3f429f49f7.png)
+; выполняет команды последовательно, && 2 командв выпонится при условии что 1 выполнена.
+
+Есть ли смысл использовать в bash `&&`, если применить `set -e`?
+
+Наверное,  нет, так как обе команды прекрящают дальнейшее выполнение при ошибки. 
+
+set -e останавливает выолнение команды при ошибке, то есть возврашении всего кроме 0. 
+    
 8. Из каких опций состоит режим bash `set -euxo pipefail` и почему его хорошо было бы использовать в сценариях?
 
-9. Используя `-o stat` для `ps`, определите, какой наиболее часто встречающийся статус у процессов в системе. В `man ps` ознакомьтесь (`/PROCESS STATE CODES`) что значат дополнительные к основной заглавной буквы статуса процессов. Его можно не учитывать при расчете (считать S, Ss или Ssl равнозначными).
+![image](https://user-images.githubusercontent.com/91008731/140096525-2882ce7f-771d-4a72-aeae-7bb0b74c2596.png)
+set -e, -u, -x, -o pipefail
 
- 
+![image](https://user-images.githubusercontent.com/91008731/140133388-723b6cd2-ea2b-46b6-ba28-68a648398881.png)
+![image](https://user-images.githubusercontent.com/91008731/140133909-491d8dd5-c3eb-4931-a320-b67030ab2795.png)
+![image](https://user-images.githubusercontent.com/91008731/140134601-a500cb32-fbeb-4fc6-ab92-64514096e925.png)
+![image](https://user-images.githubusercontent.com/91008731/140135155-f91af5a4-7d39-4431-814e-9179b20ddb79.png)
+То есть идеально для отладки сценариев и скриптов,  показывает выполнени всех команд и ошибки , если есть и прекращает сценарий при ошибке.
+
+9. Используя `-o stat` для `ps`, определите, какой наиболее часто встречающийся статус у процессов в системе. В `man ps` ознакомьтесь (`/PROCESS STATE CODES`) что значат дополнительные к основной заглавной буквы статуса процессов. Его можно не учитывать при расчете (считать S, Ss или Ssl равнозначными).
+![image](https://user-images.githubusercontent.com/91008731/140162935-07611f0b-af17-45a9-bc55-a525b168e989.png)
+самые частотные  I    Idle kernel thread
+S    interruptible sleep (waiting for an event to complete)
+ ![image](https://user-images.githubusercontent.com/91008731/140165079-f888b4c2-225b-4b6b-89dc-ee7519ea5380.png)
+
  ---
 
 ## Как сдавать задания
