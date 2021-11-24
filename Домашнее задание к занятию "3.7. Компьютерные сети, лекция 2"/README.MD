@@ -2,11 +2,46 @@
 
 1. Проверьте список доступных сетевых интерфейсов на вашем компьютере. Какие команды есть для этого в Linux и в Windows?
 
+windows
+![image](https://user-images.githubusercontent.com/91008731/143221701-32feec32-cc33-45d4-b0d1-c769bc86a33f.png)
+ipconfig /all
+
+linux
+ifconfig -a
+![image](https://user-images.githubusercontent.com/91008731/143223770-6abe2ec0-36ba-4843-b2b8-8a04317176ad.png)
+
+ip link show
+
+![image](https://user-images.githubusercontent.com/91008731/143224328-ef0d8460-baa0-4765-ba58-b87ed2bba418.png)
+ip addr
+
+ls /sys/class/net
+![image](https://user-images.githubusercontent.com/91008731/143224643-c55f21c5-9901-428b-af12-ca6abd1826aa.png)
+
+cat /proc/net/dev
+
+netstat -i
+
+![image](https://user-images.githubusercontent.com/91008731/143225118-ae08bda7-a894-45e5-81a0-bfd29dd30550.png)
+
+
+
+
 2. Какой протокол используется для распознавания соседа по сетевому интерфейсу? Какой пакет и команды есть в Linux для этого?
+
+протокод lldp
+и пакет lldp
+
+![image](https://user-images.githubusercontent.com/91008731/143227951-d6167b21-b3f9-4c93-8780-284473e34387.png)
+
 
 3. Какая технология используется для разделения L2 коммутатора на несколько виртуальных сетей? Какой пакет и команды есть в Linux для этого? Приведите пример конфига.
 
+
+
 4. Какие типы агрегации интерфейсов есть в Linux? Какие опции есть для балансировки нагрузки? Приведите пример конфига.
+
+
 
 5. Сколько IP адресов в сети с маской /29 ? Сколько /29 подсетей можно получить из сети с маской /24. Приведите несколько примеров /29 подсетей внутри сети 10.10.10.0/24.
 
