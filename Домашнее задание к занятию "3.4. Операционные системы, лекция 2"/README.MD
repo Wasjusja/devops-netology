@@ -18,24 +18,18 @@ Node Exporter установлен и работает.
 3. Установите в свою виртуальную машину [Netdata](https://github.com/netdata/netdata). Воспользуйтесь [готовыми пакетами](https://packagecloud.io/netdata/netdata/install) для установки (`sudo apt install -y netdata`). После успешной установки:
     * в конфигурационном файле `/etc/netdata/netdata.conf` в секции [web] замените значение с localhost на `bind to = 0.0.0.0`,
     * добавьте в Vagrantfile проброс порта Netdata на свой локальный компьютер и сделайте `vagrant reload`:
-После проброски портов в файле vagrant виртуалка перестала запускаться,  помогло только vagrant destroy. что -то неправильно делаю. 
-![image](https://user-images.githubusercontent.com/91008731/142193508-1a3a300e-4952-48df-824a-5a613b9c69b3.png)
-
-
-    ```bash
-    config.vm.network "forwarded_port", guest: 19999, host: 19999
-    ```
-![image](https://user-images.githubusercontent.com/91008731/142046781-8718e01f-9b40-4ccd-81b7-2d16d0bb71be.png)
-![image](https://user-images.githubusercontent.com/91008731/142047216-4c6eb8c4-1a2e-46d5-bab0-5cc18385318b.png)
-![image](https://user-images.githubusercontent.com/91008731/142048056-41c1b0fc-a73e-4a39-833a-0f9c48db96a7.png)
-![image](https://user-images.githubusercontent.com/91008731/142050162-c4b64078-576f-4386-b20d-2a9356b6805c.png)
-![image](https://user-images.githubusercontent.com/91008731/142194267-df16a416-e6e8-4dec-8173-c2d6d3128413.png)
-![image](https://user-images.githubusercontent.com/91008731/142194844-cd6e2cd2-d942-4632-bca1-e9324beb4f16.png)
-![image](https://user-images.githubusercontent.com/91008731/142195856-36c916d8-81fe-48c3-a2dd-5d13f425801a.png)
-помогло только vagrant destroy и затем vagrant up
+Netdata уствновлена,  порты проброшены.
+![image](https://user-images.githubusercontent.com/91008731/148061413-8d50306e-495c-4c10-9c0a-0b33173d5e17.png)
 
 
     После успешной перезагрузки в браузере *на своем ПК* (не в виртуальной машине) вы должны суметь зайти на `localhost:19999`. Ознакомьтесь с метриками, которые по умолчанию собираются Netdata и с комментариями, которые даны к этим метрикам.
+    
+    ![image](https://user-images.githubusercontent.com/91008731/148061531-a42e6eee-11cc-4753-baa9-ef56dc70ca96.png)
+Собираются такие метрики как CPU utilization по ядрам, system Load, Disk monitoring, memory, networking stack
+
+![image](https://user-images.githubusercontent.com/91008731/148062630-f5523f59-6876-457f-9897-77d2243f39dd.png)
+![image](https://user-images.githubusercontent.com/91008731/148062715-f7e02e58-b723-46da-96a5-08e48c213b08.png)
+![image](https://user-images.githubusercontent.com/91008731/148062878-79e2dd84-e2ce-4e73-ac49-4e5af5697edf.png)
 
 3. Можно ли по выводу `dmesg` понять, осознает ли ОС, что загружена не на настоящем оборудовании, а на системе виртуализации?
 осознает
@@ -56,14 +50,91 @@ unlimit -n c с помощью этого параметра можно меня
 6. Запустите любой долгоживущий процесс (не `ls`, который отработает мгновенно, а, например, `sleep 1h`) в отдельном неймспейсе процессов; покажите, что ваш процесс работает под PID 1 через `nsenter`. Для простоты работайте в данном задании под root (`sudo -i`). Под обычным пользователем требуются дополнительные опции (`--map-root-user`) и т.д.
 ![image](https://user-images.githubusercontent.com/91008731/142219307-8e1d7430-4ba2-40f1-9f7a-026ab5c897bf.png)
 
+заходим под root sudo -i
+
+запукаем sleep через unshare
+![image](https://user-images.githubusercontent.com/91008731/148070976-5b072cfd-88a8-4733-8b08-fc3f14f37cdf.png)
+
+заходим в процес
+![image](https://user-images.githubusercontent.com/91008731/148071405-7947fec9-764c-4cae-99f7-68d55b167fe0.png)
+
 
 
 7. Найдите информацию о том, что такое `:(){ :|:& };:`. Запустите эту команду в своей виртуальной машине Vagrant с Ubuntu 20.04 (**это важно, поведение в других ОС не проверялось**). Некоторое время все будет "плохо", после чего (минуты) – ОС должна стабилизироваться. Вызов `dmesg` расскажет, какой механизм помог автоматической стабилизации. Как настроен этот механизм по-умолчанию, и как изменить число процессов, которое можно создать в сессии?
 
-С 6 и 7 пока не разобрался. 
+![image](https://user-images.githubusercontent.com/91008731/148071956-e83882eb-e7f2-4bc7-947a-08db45ef81eb.png)
 
-Поможете с 3 решить проблему? 
-Спасибо
+![image](https://user-images.githubusercontent.com/91008731/148073826-d9cf3977-5490-49bf-bd93-8c1046410888.png)
+Через dmesg смотрим , сработал механизм контейнерезации контрольных групп,  чтобы сберечб ресурсы. 
+
+По умолчанию параметры можно посмотреть здесь
+
+ulimit -a 
+![image](https://user-images.githubusercontent.com/91008731/148075915-6eec2fc6-c621-4aa2-9e73-83203df3ec7c.png)
+
+Изменить настройки можно здесь
+
+/etc/security/limits.conf или /etc/limits.conf
+
+# /etc/security/limits.conf
+#
+#Each line describes a limit for a user in the form:
+#
+#<domain>        <type>  <item>  <value>
+#
+#Where:
+#<domain> can be:
+#        - a user name
+#        - a group name, with @group syntax
+#        - the wildcard *, for default entry
+#        - the wildcard %, can be also used with %group syntax,
+#                 for maxlogin limit
+#        - NOTE: group and wildcard limits are not applied to root.
+#          To apply a limit to the root user, <domain> must be
+#          the literal username root.
+#
+#<type> can have the two values:
+#        - "soft" for enforcing the soft limits
+#        - "hard" for enforcing hard limits
+#
+#<item> can be one of the following:
+#        - core - limits the core file size (KB)
+#        - data - max data size (KB)
+#        - fsize - maximum filesize (KB)
+#        - memlock - max locked-in-memory address space (KB)
+#        - nofile - max number of open file descriptors
+#        - rss - max resident set size (KB)
+#        - stack - max stack size (KB)
+#        - cpu - max CPU time (MIN)
+#        - nproc - max number of processes
+#        - as - address space limit (KB)
+#        - maxlogins - max number of logins for this user
+#        - maxsyslogins - max number of logins on the system
+#        - priority - the priority to run user process with
+#        - locks - max number of file locks the user can hold
+#        - sigpending - max number of pending signals
+#        - msgqueue - max memory used by POSIX message queues (bytes)
+#        - nice - max nice priority allowed to raise to values: [-20, 19]
+#        - rtprio - max realtime priority
+#        - chroot - change root to directory (Debian-specific)
+#
+#<domain>      <type>  <item>         <value>
+#
+
+#*               soft    core            0
+#root            hard    core            100000
+#*               hard    rss             10000
+#@student        hard    nproc           20
+#@faculty        soft    nproc           20
+#@faculty        hard    nproc           50
+#ftp             hard    nproc           0
+#ftp             -       chroot          /ftp
+#@student        -       maxlogins       4
+
+# End of file
+
+
+
  
  ---
 
