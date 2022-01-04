@@ -6,6 +6,11 @@
     * предусмотрите возможность добавления опций к запускаемому процессу через внешний файл (посмотрите, например, на `systemctl cat cron`),
     * удостоверьтесь, что с помощью systemctl процесс корректно стартует, завершается, а после перезагрузки автоматически поднимается.
 Node Exporter установлен и работает. 
+
+Опции передаются через unit file
+
+![image](https://user-images.githubusercontent.com/91008731/148079713-9d2077f2-7c3e-43a1-8e4f-bde59dda2eae.png)
+
 ![image](https://user-images.githubusercontent.com/91008731/142164263-479cff25-ecda-4bff-ba77-fbcec030d037.png)
 Данные и метрики выводит
 ![image](https://user-images.githubusercontent.com/91008731/142169772-704ae9d3-6617-4703-b941-bd86f44c9e2a.png)
