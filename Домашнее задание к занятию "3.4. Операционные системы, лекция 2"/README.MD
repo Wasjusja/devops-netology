@@ -7,7 +7,10 @@
     * удостоверьтесь, что с помощью systemctl процесс корректно стартует, завершается, а после перезагрузки автоматически поднимается.
 Node Exporter установлен и работает. 
 
-Опции передаются через unit file
+Опции передаются через Endiremnt или Envirement file и выводятся через Exec_Start
+J
+![image](https://user-images.githubusercontent.com/91008731/148692945-b669a30a-500f-43fe-a4d0-3405999cd4bc.png)
+
 
 ![image](https://user-images.githubusercontent.com/91008731/148079713-9d2077f2-7c3e-43a1-8e4f-bde59dda2eae.png)
 
