@@ -1,0 +1,165 @@
+# Домашнее задание к занятию "3.8. Компьютерные сети, лекция 3"
+
+1. Подключитесь к публичному маршрутизатору в интернет. Найдите маршрут к вашему публичному IP
+```
+telnet route-views.routeviews.org
+Username: rviews
+show ip route x.x.x.x/32
+show bgp x.x.x.x/32
+```
+Gateway of last resort is 128.223.51.1 to network 0.0.0.0
+
+S*    0.0.0.0/0 [1/0] via 128.223.51.1
+      1.0.0.0/8 is variably subnetted, 3152 subnets, 17 masks
+B        1.0.0.0/24 [20/0] via 64.71.137.241, 09:55:49
+B        1.0.4.0/22 [20/0] via 64.71.137.241, 09:55:49
+B        1.0.4.0/24 [20/0] via 64.71.137.241, 09:55:49
+B        1.0.5.0/24 [20/0] via 202.232.0.2, 09:55:49
+B        1.0.6.0/24 [20/0] via 64.71.137.241, 09:55:49
+B        1.0.7.0/24 [20/0] via 64.71.137.241, 09:55:49
+B        1.0.64.0/18 [20/0] via 64.71.137.241, 6w1d
+B        1.0.128.0/17 [20/0] via 64.71.137.241, 7w0d
+B        1.0.128.0/18 [20/0] via 64.71.137.241, 7w0d
+
+
+
+
+route-views>show bgp
+BGP table version is 4277466852, local router ID is 128.223.51.103
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+Nr>  0.0.0.0          162.251.163.2                          0 53767 14315 174 i
+V*   1.0.0.0/24       132.198.255.253                        0 1351 13335 i
+V*                    37.139.139.17            0             0 57866 13335 i
+V*                    94.142.247.3             0             0 8283 13335 i
+V*                    202.93.8.242                           0 24441 13335 i
+V*                    154.11.12.212            0             0 852 13335 i
+V*                    140.192.8.16                           0 20130 6939 13335 i
+V*                    193.0.0.56                             0 3333 13335 i
+V*                    12.0.1.63                              0 7018 6453 13335 i
+V*                    217.192.89.50                          0 3303 13335 i
+V*                    162.250.137.254                        0 4901 6079 13335 i
+V*                    162.251.163.2                          0 53767 13335 i
+V*                    212.66.96.126                          0 20912 13335 i
+V*                    208.51.134.254           0             0 3549 3356 13335 i
+ --More-- Connection closed by foreign host.
+
+
+
+
+2. Создайте dummy0 интерфейс в Ubuntu. Добавьте несколько статических маршрутов. Проверьте таблицу маршрутизации.
+
+root@vagrant:/home/vagrant# ip ro sh
+default via 10.0.2.2 dev eth0 proto dhcp src 10.0.2.15 metric 100
+10.0.2.0/24 dev eth0 proto kernel scope link src 10.0.2.15
+10.0.2.2 dev eth0 proto dhcp scope link src 10.0.2.15 metric 100
+
+создаем dummy
+root@vagrant:/home/vagrant# ifconfig -a | grep dummy
+dummy0: flags=195<UP,BROADCAST,RUNNING,NOARP>  mtu 1500
+dummy1: flags=130<BROADCAST,NOARP>  mtu 1500
+root@vagrant:/home/vagrant#
+
+добавили стат маршрут и проверили таблицу маршрутизации
+
+root@vagrant:/home/vagrant# netstat -rn
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+0.0.0.0         10.0.2.2        0.0.0.0         UG        0 0          0 eth0
+10.0.2.0        0.0.0.0         255.255.255.0   U         0 0          0 eth0
+10.0.2.2        0.0.0.0         255.255.255.255 UH        0 0          0 eth0
+192.168.1.0     0.0.0.0         255.255.255.0   U         0 0          0 dummy0
+root@vagrant:/home/vagrant# ip ro sh
+default via 10.0.2.2 dev eth0 proto dhcp src 10.0.2.15 metric 100
+10.0.2.0/24 dev eth0 proto kernel scope link src 10.0.2.15
+10.0.2.2 dev eth0 proto dhcp scope link src 10.0.2.15 metric 100
+192.168.1.0/24 dev dummy0 proto kernel scope link src 192.168.1.150
+root@vagrant:/home/vagrant#
+
+# interfaces(5) file used by ifup(8) and ifdown(8)
+# Include files from /etc/network/interfaces.d:
+source-directory /etc/network/interfaces.d
+
+etc/network/interfaces
+
+auto dummy0
+iface dummy0 inet static
+address 192.168.1.150
+netmask 255.255.255.0
+
+#static route
+up ip ro add 192.168.1.3/16 via 192.168.1.0
+up ip ro add 192.168.1.5/16 via 192.168.1.0
+
+
+
+
+3. Проверьте открытые TCP порты в Ubuntu, какие протоколы и приложения используют эти порты? Приведите несколько примеров.
+
+tcp        0      0 0.0.0.0:111             0.0.0.0:*               LISTEN      1/init
+tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      23149/systemd-resol
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      706/sshd: /usr/sbin
+tcp        0      0 127.0.0.1:8125          0.0.0.0:*               LISTEN      679/netdata
+tcp        0      0 0.0.0.0:19999           0.0.0.0:*               LISTEN      679/netdata
+tcp6       0      0 :::9100                 :::*                    LISTEN      42523/node_exporter
+tcp6       0      0 :::111                  :::*                    LISTEN      1/init
+tcp6       0      0 :::22                   :::*                    LISTEN      706/sshd: /usr/sbin
+tcp6       0      0 ::1:8125                :::*                    LISTEN      679/netdata
+
+
+4. Проверьте используемые UDP сокеты в Ubuntu, какие протоколы и приложения используют эти порты?
+
+root@vagrant:/home/vagrant# netstat -nulp
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+udp        0      0 0.0.0.0:111             0.0.0.0:*                           1/init
+udp        0      0 127.0.0.1:8125          0.0.0.0:*                           679/netdata
+udp        0      0 127.0.0.53:53           0.0.0.0:*                           23149/systemd-resol
+udp        0      0 10.0.2.15:68            0.0.0.0:*                           377/systemd-network
+udp6       0      0 :::111                  :::*                                1/init
+udp6       0      0 ::1:8125                :::*                                679/netdata
+root@vagrant:/home/vagrant#
+
+
+5. Используя diagrams.net, создайте L3 диаграмму вашей домашней сети или любой другой сети, с которой вы работали. 
+
+ ---
+## Задание для самостоятельной отработки (необязательно к выполнению)
+
+6*. Установите Nginx, настройте в режиме балансировщика TCP или UDP.
+
+7*. Установите bird2, настройте динамический протокол маршрутизации RIP.
+
+8*. Установите Netbox, создайте несколько IP префиксов, используя curl проверьте работу API.
+
+ ---
+
+## Как сдавать задания
+
+Обязательными к выполнению являются задачи без указания звездочки. Их выполнение необходимо для получения зачета и диплома о профессиональной переподготовке.
+
+Задачи со звездочкой (*) являются дополнительными задачами и/или задачами повышенной сложности. Они не являются обязательными к выполнению, но помогут вам глубже понять тему.
+
+Домашнее задание выполните в файле readme.md в github репозитории. В личном кабинете отправьте на проверку ссылку на .md-файл в вашем репозитории.
+
+Также вы можете выполнить задание в [Google Docs](https://docs.google.com/document/u/0/?tgif=d) и отправить в личном кабинете на проверку ссылку на ваш документ.
+Название файла Google Docs должно содержать номер лекции и фамилию студента. Пример названия: "1.1. Введение в DevOps — Сусанна Алиева".
+
+Если необходимо прикрепить дополнительные ссылки, просто добавьте их в свой Google Docs.
+
+Перед тем как выслать ссылку, убедитесь, что ее содержимое не является приватным (открыто на комментирование всем, у кого есть ссылка), иначе преподаватель не сможет проверить работу. Чтобы это проверить, откройте ссылку в браузере в режиме инкогнито.
+
+[Как предоставить доступ к файлам и папкам на Google Диске](https://support.google.com/docs/answer/2494822?hl=ru&co=GENIE.Platform%3DDesktop)
+
+[Как запустить chrome в режиме инкогнито ](https://support.google.com/chrome/answer/95464?co=GENIE.Platform%3DDesktop&hl=ru)
+
+[Как запустить  Safari в режиме инкогнито ](https://support.apple.com/ru-ru/guide/safari/ibrw1069/mac)
+
+Любые вопросы по решению задач задавайте в чате учебной группы.
+
+---
