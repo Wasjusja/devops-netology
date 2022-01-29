@@ -27,6 +27,9 @@
 - Vagrant
 - Ansible
 
+![image](https://user-images.githubusercontent.com/91008731/151665242-a98da6ab-a3fd-48d3-9d7a-a5650d17d520.png)
+![image](https://user-images.githubusercontent.com/91008731/151665405-1419d71e-9175-433a-b6d9-6019d629750f.png)
+![image](https://user-images.githubusercontent.com/91008731/151665898-7c7e3d37-a316-4042-833c-e164ac37a886.png)
 
 
 *Приложить вывод команд установленных версий каждой из программ, оформленный в markdown.*
