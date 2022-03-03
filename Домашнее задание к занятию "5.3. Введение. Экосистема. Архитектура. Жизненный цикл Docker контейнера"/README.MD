@@ -22,6 +22,10 @@ Hey, Netology
 ```
 Опубликуйте созданный форк в своем репозитории и предоставьте ответ в виде ссылки на https://hub.docker.com/username_repo.
 
+https://hub.docker.com/repository/docker/wasjusja/nginxweb
+![image](https://user-images.githubusercontent.com/91008731/156665409-feafe944-02ea-4648-a806-8fa9db9d5a4f.png)
+
+
 ## Задача 2
 
 Посмотрите на сценарий ниже и ответьте на вопрос:
