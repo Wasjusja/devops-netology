@@ -12,6 +12,11 @@
 
 Приведите получившуюся команду или docker-compose манифест.
 
+![image](https://user-images.githubusercontent.com/91008731/160772056-948a6328-97c2-4f58-8dd1-a05320a14ff9.png)
+
+![image](https://user-images.githubusercontent.com/91008731/160772399-9a776036-3f8f-4c8e-bce0-6828b04dca10.png)
+
+![image](https://user-images.githubusercontent.com/91008731/160773671-afc0deb3-f090-4cba-9eb5-5af252c9cf6e.png)
 
 
 ## Задача 2
