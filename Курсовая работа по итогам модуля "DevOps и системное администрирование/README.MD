@@ -108,8 +108,7 @@ server {
         ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
         ssl_ciphers         HIGH:!aNULL:!MD5;
         
-        ![image](https://user-images.githubusercontent.com/91008731/189482726-006663d8-022a-4589-9a35-0e6b01e7a132.png)
-
+        
 
 7. По инструкции (ссылка) настройте nginx на https, используя ранее подготовленный сертификат:
 
@@ -124,8 +123,7 @@ sudo service nginx restart
 
 
 vagrant@vagrant:~$ crontab -l
-# Edit this file to introduce tasks to be run by cron.
-# m h  dom mon dow   command
+
 21 17 * * * /home/vagrant/script.sh >/dev/null 2>&1
 $ grep CRON /var/log/syslog
 ...
