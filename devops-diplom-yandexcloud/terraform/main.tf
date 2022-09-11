@@ -1,6 +1,6 @@
 terraform {
   cloud {
-    organization = "maliushkin"
+    organization = "zagovorov"
 
     workspaces {
       name = "devops-diplom-yandexcloud"
@@ -10,7 +10,7 @@ terraform {
 
 resource "yandex_compute_instance" "nat_instance" {
   name     = "nat"
-  hostname = "nat.maliushkin.ru"
+  hostname = "nat.zagovoroff.ru"
   zone     = "ru-central1-a"
 
   resources {
