@@ -3,16 +3,20 @@
 1.Создаем домен и прописываем DNS
 ![image](https://user-images.githubusercontent.com/91008731/189588264-7e147679-2836-4975-9273-eae7a46487d6.png)
 
-2. Запускаем terraform на terraform cloud
+2. Создаем конфигурацию для terraform в github. Ссылка на конфигурационные файлы terraform: https://github.com/Wasjusja/terraform.git
+
+3. Запускаем terraform на terraform cloud
 ![image](https://user-images.githubusercontent.com/91008731/189588527-8d9d7999-1247-47ec-99a1-cfc8e6a28c9d.png)
 
-3. Ссылка на конфигурационные файлы terraform: https://github.com/Wasjusja/terraform.git
+4. Проверяем,  как машинки запустились на yandex cloud
+
+![image](https://user-images.githubusercontent.com/91008731/189745940-b0fbb8d0-523a-426d-9906-79ec1d371e04.png)
+
+5. Смотрим зоны DNS
+
+![image](https://user-images.githubusercontent.com/91008731/189747371-95d6252d-eb3f-4309-8f61-9072b1f26f23.png)
 
 
-
-
-
-Это можно сделать двумя способами:
 
 Рекомендуемый вариант: самостоятельная установка Kubernetes кластера.
 а. При помощи Terraform подготовить как минимум 3 виртуальных машины Compute Cloud для создания Kubernetes-кластера. Тип виртуальной машины следует выбрать самостоятельно с учётом требовании к производительности и стоимости. Если в дальнейшем поймете, что необходимо сменить тип инстанса, используйте Terraform для внесения изменений.
