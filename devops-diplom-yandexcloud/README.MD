@@ -211,9 +211,38 @@ runner_zagovoroff_ru_ip_addr_internal: "10.100.1.19"
     static_configs:
       - targets: [ '10.100.1.23:9100' ]
 
+Запускаем ansible
+
+Запустим роль для основного сервера:
+
+ansible-playbook roles/entrance/tasks/main.yml
+
+...
+PLAY RECAP ***********************************************************************************************************************************************************************************************
+zagovoroff.ru              : ok=28   changed=25   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+Запускаем роль кластера MySQL:
+ansible-playbook db/tasks/main.yml
+
+...
+PLAY RECAP ***********************************************************************************************************************************************************************************************
+db01.zagovoroff.ru         : ok=27   changed=21   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+db02.zagovoroff.ru         : ok=22   changed=18   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+
+Запустим роль для WordPress:
+
+ansible-playbook app/tasks/main.yml 
+
+...
+PLAY RECAP ***********************************************************************************************************************************************************************************************
+app.zagovoroff.ru          : ok=26   changed=23   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 
 
 
+Запускаем роль для Prometheus, Alert Manager и Grafana:
+ansible-playbook monitoring/tasks/main.yml 
 
-
-
+...
+PLAY RECAP ***********************************************************************************************************************************************************************************************
+monitoring.zagovoroff.ru   : ok=15   changed=13   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0  
