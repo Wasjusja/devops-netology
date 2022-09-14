@@ -41,7 +41,7 @@
         content: |
           server {
               listen 80;
-              server_name www.maliushkin.ru;
+              server_name www.zagovoroff.ru;
           
               location / {
                 proxy_set_header Host $host;
@@ -49,16 +49,16 @@
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header X-Forwarded-Proto $scheme;
           
-                proxy_pass http://{{ app_maliushkin_ru_ip_addr_internal }};
+                proxy_pass http://{{ app_zagovoroff_ru_ip_addr_internal }};
                 proxy_read_timeout 90;
           
-                proxy_redirect http://{{ app_maliushkin_ru_ip_addr_internal }} http://www.maliushkin.ru;
+                proxy_redirect http://{{ app_zagovoroff_ru_ip_addr_internal }} http://www.zagovoroff.ru;
               }
           }
           
           server {
               listen 80;
-              server_name gitlab.maliushkin.ru;
+              server_name gitlab.zagovoroff.ru;
           
               location / {
                 client_max_body_size 100m;
@@ -68,16 +68,16 @@
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header X-Forwarded-Proto $scheme;
           
-                proxy_pass http://{{ gitlab_maliushkin_ru_ip_addr_internal }}:10080;
+                proxy_pass http://{{ gitlab_zagovoroff_ru_ip_addr_internal }}:10080;
                 proxy_read_timeout 90;
           
-                proxy_redirect http://{{ gitlab_maliushkin_ru_ip_addr_internal }}:10080 https://gitlab.maliushkin.ru;
+                proxy_redirect http://{{ gitlab_zagovoroff_ru_ip_addr_internal }}:10080 https://gitlab.zagovoroff.ru;
               }
           }
           
           server {
               listen 80;
-              server_name grafana.maliushkin.ru;
+              server_name grafana.zagovoroff.ru;
           
               location / {
                 proxy_set_header Host $host;
@@ -85,16 +85,16 @@
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header X-Forwarded-Proto $scheme;
           
-                proxy_pass http://{{ monitoring_maliushkin_ru_ip_addr_internal }}:3000;
+                proxy_pass http://{{ monitoring_zagovoroff_ru_ip_addr_internal }}:3000;
                 proxy_read_timeout 90;
           
-                proxy_redirect http://{{ monitoring_maliushkin_ru_ip_addr_internal }}:3000 https://grafana.maliushkin.ru;
+                proxy_redirect http://{{ monitoring_zagovoroff_ru_ip_addr_internal }}:3000 https://grafana.zagovoroff.ru;
               }
           }
           
           server {
               listen 80;
-              server_name prometheus.maliushkin.ru;
+              server_name prometheus.zagovoroff.ru;
           
               location / {
                 proxy_set_header Host $host;
@@ -102,16 +102,16 @@
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header X-Forwarded-Proto $scheme;
           
-                proxy_pass http://{{ monitoring_maliushkin_ru_ip_addr_internal }}:9090;
+                proxy_pass http://{{ monitoring_zagovoroff_ru_ip_addr_internal }}:9090;
                 proxy_read_timeout 90;
           
-                proxy_redirect http://{{ monitoring_maliushkin_ru_ip_addr_internal }}:9090 https://prometheus.maliushkin.ru;
+                proxy_redirect http://{{ monitoring_zagovoroff_ru_ip_addr_internal }}:9090 https://prometheus.zagovoroff.ru;
               }
           }
           
           server {
               listen 80;
-              server_name alertmanager.maliushkin.ru;
+              server_name alertmanager.zagovoroff.ru;
           
               location / {
                 proxy_set_header Host $host;
@@ -119,10 +119,10 @@
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header X-Forwarded-Proto $scheme;
           
-                proxy_pass http://{{ monitoring_maliushkin_ru_ip_addr_internal }}:9093;
+                proxy_pass http://{{ monitoring_zagovoroff_ru_ip_addr_internal }}:9093;
                 proxy_read_timeout 90;
           
-                proxy_redirect http://{{ monitoring_maliushkin_ru_ip_addr_internal }}:9093 https://alertmanager.maliushkin.ru;
+                proxy_redirect http://{{ monitoring_zagovoroff_ru_ip_addr_internal }}:9093 https://alertmanager.zagovoroff.ru;
               }
           }
 
@@ -146,20 +146,20 @@
     - name: Install snap certbot
       command: snap install --classic certbot
 
-    - name: Request for SSL for `www.maliushkin.ru`
-      command: certbot -d www.maliushkin.ru -m malyushkinr@gmail.com --nginx --agree-tos --test-cert
+    - name: Request for SSL for `www.zagovoroff.ru`
+      command: certbot -d www.zagovoroff.ru -m vassil@mail.ru --nginx --agree-tos --test-cert
 
-    - name: Request for SSL for `grafana.maliushkin.ru`
-      command: certbot -d grafana.maliushkin.ru -m malyushkinr@gmail.com --nginx --agree-tos --test-cert
+    - name: Request for SSL for `grafana.zagovoroff.ru`
+      command: certbot -d grafana.zagovoroff.ru -m vassil@mail.ru --nginx --agree-tos --test-cert
 
-    - name: Request for SSL for `prometheus.maliushkin.ru`
-      command: certbot -d prometheus.maliushkin.ru -m malyushkinr@gmail.com --nginx --agree-tos --test-cert
+    - name: Request for SSL for `prometheus.zagovoroff.ru`
+      command: certbot -d prometheus.zagovoroff.ru -m vassil@mail.ru --nginx --agree-tos --test-cert
 
-    - name: Request for SSL for `alertmanager.maliushkin.ru`
-      command: certbot -d alertmanager.maliushkin.ru -m malyushkinr@gmail.com --nginx --agree-tos --test-cert
+    - name: Request for SSL for `alertmanager.zagovoroff.ru`
+      command: certbot -d alertmanager.zagovoroff.ru -m vassil@mail.ru --nginx --agree-tos --test-cert
 
-    - name: Request for SSL for `gitlab.maliushkin.ru`
-      command: certbot -d gitlab.maliushkin.ru -m malyushkinr@gmail.com --nginx --agree-tos --test-cert
+    - name: Request for SSL for `gitlab.zagovoroff.ru`
+      command: certbot -d gitlab.zagovoroff.ru -m vassil@mail.ru --nginx --agree-tos --test-cert
 
     - name: Include Docker task from `common` role
       include_role:
