@@ -59,6 +59,48 @@ terraform {
 
 
 3. Запускаем terraform на terraform cloud
+
+Запуск Terraform
+Выполним terraform init:
+terraform init
+
+
+Initializing Terraform Cloud...
+
+Initializing provider plugins...
+- Finding yandex-cloud/yandex versions matching "0.75.0"...
+- Installing yandex-cloud/yandex v0.75.0...
+- Installed yandex-cloud/yandex v0.75.0 (self-signed, key ID E40F590B50BB8E40)
+
+...
+
+Terraform Cloud has been successfully initialized!
+
+You may now begin working with Terraform Cloud. Try running "terraform plan" to
+see any changes that are required for your infrastructure.
+
+If you ever set or change modules or Terraform Settings, run "terraform init"
+again to reinitialize your working directory.
+
+Выполним terraform validate:
+
+terraform validate
+
+Success! The configuration is valid.
+
+Добавим переменные окружения:
+TF_VAR_YANDEX_TOKEN 
+TF_VAR_SSH_ID_RSA_PUB — копируем из cat ~/.ssh/id_rsa.pub.
+
+Выполним terraform plan:
+
+terraform apply --auto-approve
+
+Выполним terraform apply --auto-approve.
+terraform apply --auto-approve
+
+проверяем,  что получилось
+
 ![image](https://user-images.githubusercontent.com/91008731/189588527-8d9d7999-1247-47ec-99a1-cfc8e6a28c9d.png)
 
 4. Проверяем,  как машинки запустились на yandex cloud
