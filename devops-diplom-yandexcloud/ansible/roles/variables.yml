@@ -1,6 +1,6 @@
-app_zagovoroff_ru_ip_addr_internal: "10.100.1.26"
+app_zagovoroff_ru_ip_addr_internal: "10.100.1.7"
 db01_zagovoroff_ru_ip_addr_internal: "10.100.1.25"
-db02_zagovoroff_ru_ip_addr_internal: "10.100.1.7"
+db02_zagovoroff_ru_ip_addr_internal: "10.100.1.23"
 entrance_zagovoroff_ru_ip_addr_external: "51.250.13.198"
 gitlab_zagovoroff_ru_ip_addr_internal: "10.100.1.4"
 monitoring_zagovoroff_ru_ip_addr_internal: "10.100.1.5"
