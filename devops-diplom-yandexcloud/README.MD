@@ -112,66 +112,108 @@ terraform apply --auto-approve
 ![image](https://user-images.githubusercontent.com/91008731/189747371-95d6252d-eb3f-4309-8f61-9072b1f26f23.png)
 
 
+Ansible
+Подготовим роли Ansible для созданной инфраструктуры. Файлы конфигурации https://github.com/Wasjusja/devops-netology/tree/main/devops-diplom-yandexcloud/ansible.
 
-Рекомендуемый вариант: самостоятельная установка Kubernetes кластера.
-а. При помощи Terraform подготовить как минимум 3 виртуальных машины Compute Cloud для создания Kubernetes-кластера. Тип виртуальной машины следует выбрать самостоятельно с учётом требовании к производительности и стоимости. Если в дальнейшем поймете, что необходимо сменить тип инстанса, используйте Terraform для внесения изменений.
-б. Подготовить ansible конфигурации, можно воспользоваться, например Kubespray
-в. Задеплоить Kubernetes на подготовленные ранее инстансы, в случае нехватки каких-либо ресурсов вы всегда можете создать их при помощи Terraform.
-Альтернативный вариант: воспользуйтесь сервисом Yandex Managed Service for Kubernetes
-а. С помощью terraform resource для kubernetes создать региональный мастер kubernetes с размещением нод в разных 3 подсетях
-б. С помощью terraform resource для kubernetes node group
-Ожидаемый результат:
+Описание:
 
-Работоспособный Kubernetes кластер.
-В файле ~/.kube/config находятся данные для доступа к кластеру.
-Команда kubectl get pods --all-namespaces отрабатывает без ошибок.
-Создание тестового приложения
-Для перехода к следующему этапу необходимо подготовить тестовое приложение, эмулирующее основное приложение разрабатываемое вашей компанией.
+В roles/common добавим сценарии для установки Docker, Docker Compose и Node exporter.
+В roles/entrance добавим роль для работы основного сервера.
+В roles/mysql добавим роль для работы кластера MySQL.
+В roles/wordpress добавим роль для работы WordPress.
+В roles/monitoring добавим роль для работы Prometheus, Alert Manager и Grafana.
 
-Способ подготовки:
+Для работы Ansible добавим IP-адреса:
 
-Рекомендуемый вариант:
-а. Создайте отдельный git репозиторий с простым nginx конфигом, который будет отдавать статические данные.
-б. Подготовьте Dockerfile для создания образа приложения.
-Альтернативный вариант:
-а. Используйте любой другой код, главное, чтобы был самостоятельно создан Dockerfile.
-Ожидаемый результат:
+Добавим значение output-переменной Terraform в ~/.ssh/config:
 
-Git репозиторий с тестовым приложением и Dockerfile.
-Регистр с собранным docker image. В качестве регистра может быть DockerHub или Yandex Container Registry, созданный также с помощью terraform.
-Подготовка cистемы мониторинга и деплой приложения
-Уже должны быть готовы конфигурации для автоматического создания облачной инфраструктуры и поднятия Kubernetes кластера.
-Теперь необходимо подготовить конфигурационные файлы для настройки нашего Kubernetes кластера.
+Host zagovoroff.ru
+  HostName 51.250.13.198
+  User ubuntu
+  IdentityFile ~/.ssh/id_rsa
+  
+Host db01.zagovoroff.ru
+  HostName 10.100.1.25
+  User ubuntu
+  IdentityFile ~/.ssh/id_rsa
+    ProxyJump ubuntu@51.250.13.198
+    ProxyCommand ssh -W %h:%p -i .ssh/id_rsa
 
-Цель:
+Host db02.zagovoroff.ru
+  HostName 10.100.1.23
+  User ubuntu
+  IdentityFile ~/.ssh/id_rsa
+    ProxyJump ubuntu@51.250.13.198
+    ProxyCommand ssh -W %h:%p -i .ssh/id_rsa
 
-Задеплоить в кластер prometheus, grafana, alertmanager, экспортер основных метрик Kubernetes.
-Задеплоить тестовое приложение, например, nginx сервер отдающий статическую страницу.
-Рекомендуемый способ выполнения:
+Host app.zagovoroff.ru
+  HostName 10.100.1.7
+  User ubuntu
+  IdentityFile ~/.ssh/id_rsa
+    ProxyJump ubuntu@51.250.13.198
+    ProxyCommand ssh -W %h:%p -i .ssh/id_rsa
 
-Воспользовать пакетом kube-prometheus, который уже включает в себя Kubernetes оператор для grafana, prometheus, alertmanager и node_exporter. При желании можете собрать все эти приложения отдельно.
-Для организации конфигурации использовать qbec, основанный на jsonnet. Обратите внимание на имеющиеся функции для интеграции helm конфигов и helm charts
-Если на первом этапе вы не воспользовались Terraform Cloud, то задеплойте в кластер atlantis для отслеживания изменений инфраструктуры.
-Альтернативный вариант:
+Host monitoring.zagovoroff.ru
+  HostName 10.100.1.5
+  User ubuntu
+  IdentityFile ~/.ssh/id_rsa
+    ProxyJump ubuntu@51.250.13.198
+    ProxyCommand ssh -W %h:%p -i .ssh/id_rsa
 
-Для организации конфигурации можно использовать helm charts
-Ожидаемый результат:
+Host gitlab.zagovoroff.ru
+  HostName 10.100.1.4
+  User ubuntu
+  IdentityFile ~/.ssh/id_rsa
+    ProxyJump ubuntu@51.250.13.198
+    ProxyCommand ssh -W %h:%p -i .ssh/id_rsa
 
-Git репозиторий с конфигурационными файлами для настройки Kubernetes.
-Http доступ к web интерфейсу grafana.
-Дашборды в grafana отображающие состояние Kubernetes кластера.
-Http доступ к тестовому приложению.
-Установка и настройка CI/CD
-Осталось настроить ci/cd систему для автоматической сборки docker image и деплоя приложения при изменении кода.
+Очистим файл known_hosts командой echo "" > ~/.ssh/known_hosts
 
-Цель:
+Добавим IP-адреса серверов в variables.yml:
 
-Автоматическая сборка docker образа при коммите в репозиторий с тестовым приложением.
-Автоматический деплой нового docker образа.
-Можно использовать teamcity, jenkins либо gitlab ci
+app_zagovoroff_ru_ip_addr_internal: "10.100.1.7"
+db01_zagovoroff_ru_ip_addr_internal: "10.100.1.25"
+db02_zagovoroff_ru_ip_addr_internal: "10.100.1.23"
+entrance_zagovoroff_ru_ip_addr_external: "51.250.13.198"
+gitlab_zagovoroff_ru_ip_addr_internal: "10.100.1.4"
+monitoring_zagovoroff_ru_ip_addr_internal: "10.100.1.5"
+runner_zagovoroff_ru_ip_addr_internal: "10.100.1.19"
 
-Ожидаемый результат:
 
-Интерфейс ci/cd сервиса доступен по http.
-При любом коммите в репозиторие с тестовым приложением происходит сборка и отправка в регистр Docker образа.
-При создании тега (например, v1.0.0) происходит сборка и отправка с соответствующим label в регистр, а также деплой соответствующего Docker образа в кластер Kubernetes.
+Добавим соответствующие IP-адреса в конфигурацию Prometheus:
+  - job_name: 'entrance-node'
+    scrape_interval: 10s
+    static_configs:
+      - targets: [ '51.250.13.198' ]
+      
+  - job_name: 'gitlab-node'
+    scrape_interval: 10s
+    static_configs:
+      - targets: [ '10.100.1.4:9100' ]
+  
+  - job_name: 'monitoring-node'
+    scrape_interval: 10s
+    static_configs:
+      - targets: [ '10.100.1.5:9100' ]
+                  
+  - job_name: 'wordpress-node'
+    scrape_interval: 10s
+    static_configs:
+      - targets: [ '10.100.1.7:9100' ]
+
+  - job_name: 'db01-node'
+    scrape_interval: 10s
+    static_configs:
+      - targets: [ '10.100.1.25:9100' ]
+
+  - job_name: 'db02-node'
+    scrape_interval: 10s
+    static_configs:
+      - targets: [ '10.100.1.23:9100' ]
+
+
+
+
+
+
+
