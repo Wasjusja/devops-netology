@@ -232,11 +232,15 @@ db02.zagovoroff.ru         : ok=22   changed=18   unreachable=0    failed=0    s
 
 Запустим роль для WordPress:
 
+
 ansible-playbook app/tasks/main.yml 
 
 ...
 PLAY RECAP ***********************************************************************************************************************************************************************************************
 app.zagovoroff.ru          : ok=26   changed=23   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+
+<img width="1680" alt="wp-install (1)" src="https://user-images.githubusercontent.com/91008731/190279322-fc357bf3-aee1-4864-9939-18373f5914da.png">
 
 
 
@@ -246,3 +250,6 @@ ansible-playbook monitoring/tasks/main.yml
 ...
 PLAY RECAP ***********************************************************************************************************************************************************************************************
 monitoring.zagovoroff.ru   : ok=15   changed=13   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0  
+
+<img width="1680" alt="grafana-dashboard" src="https://user-images.githubusercontent.com/91008731/190279200-867a35a3-7cf3-4186-a6a3-4801de4a3ee0.png">
+
