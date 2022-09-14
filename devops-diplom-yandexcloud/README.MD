@@ -5,6 +5,59 @@
 
 2. Создаем конфигурацию для terraform в github. Ссылка на конфигурационные файлы terraform: https://github.com/Wasjusja/terraform.git
 
+- В provider.tf добавим конфигурацию провайдера yandex:
+
+terraform {
+  required_providers {
+    yandex = {
+      source  = "yandex-cloud/yandex"
+      version = "0.75.0"
+    }
+  }
+}
+
+provider "yandex" {
+  token     = var.YANDEX_TOKEN
+  cloud_id  = var.yandex_cloud_id
+  folder_id = var.yandex_folder_id
+  zone      = "ru-central1-a"
+}
+
+
+ - В variables.tf добавим Яндекс токен и идентефикаторы облака:
+
+variable "YANDEX_TOKEN" {}
+
+variable "yandex_folder_id" {
+  default = "b1glcs1c44jip4ce4jcb"
+}
+
+variable "yandex_cloud_id" {
+  default = "b1g5jatgvp7evt4p5s99"
+}
+
+variable "SSH_ID_RSA_PUB" {}
+
+
+ - В main.tf добавим конфигурацию backend:
+
+terraform {
+  cloud {
+    organization = "zagovorov"
+
+    workspaces {
+      name = "devops-diplom-yandexcloud"
+    }
+  }
+}
+
+
+ - В main.tf добавим настройки всех инстансов
+
+-  В nextwork.tf добавим сетевые настройки.
+-  В output.tf добавим вывод настроек доступа и IP-адресов.
+
+
 3. Запускаем terraform на terraform cloud
 ![image](https://user-images.githubusercontent.com/91008731/189588527-8d9d7999-1247-47ec-99a1-cfc8e6a28c9d.png)
 
